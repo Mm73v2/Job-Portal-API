@@ -9,6 +9,7 @@ import connectToDB from "./config/connectToDB";
 import { TAppError } from "./utils/errorsUtils/appError";
 import httpStatusText from "./utils/httpStatusText";
 import { authRouter, usersRouter, jobsRouter } from "./routes";
+import { Role } from "./models";
 
 const app = express();
 const server = http.createServer(app);
