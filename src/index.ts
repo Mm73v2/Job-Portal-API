@@ -9,7 +9,7 @@ import connectToDB from "./config/connectToDB";
 import { TAppError } from "./utils/errorsUtils/appError";
 import httpStatusText from "./utils/httpStatusText";
 import { authRouter, usersRouter, jobsRouter } from "./routes";
-import { Role } from "./models";
+import applicationRouter from "./routes/applicationsRoute";
 
 const app = express();
 const server = http.createServer(app);
@@ -35,6 +35,7 @@ app.use(express.json());
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", usersRouter);
 app.use("/api/v1/jobs", jobsRouter);
+app.use("/api/v1/applications", applicationRouter);
 
 // Global error handler
 app.use(
