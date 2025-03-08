@@ -1,8 +1,9 @@
 import Application from "../models/ApplicationModel";
+import { TApplication } from "../schemas/applicationSchema";
 import handleSequelizeError from "../utils/errorsUtils/handleSequelizeError";
 import paginationInfo from "../utils/pagination/paginationInfo";
 
-const getApplications = async (pagination: {
+const getApplicationsService = async (pagination: {
   limit: number;
   offset: number;
 }) => {
@@ -21,4 +22,13 @@ const getApplications = async (pagination: {
   }
 };
 
-export default { getApplications };
+const createApplicationService = async (data: TApplication) => {
+  try {
+    const application = (await Application.create(data)).toJSON();
+    return application;
+  } catch (error) {
+    throw handleSequelizeError(error);
+  }
+};
+
+export default { getApplicationsService, createApplicationService };

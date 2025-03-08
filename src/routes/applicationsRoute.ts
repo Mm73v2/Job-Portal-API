@@ -4,7 +4,8 @@ import { Router } from "express";
 const applicationRouter = Router();
 
 applicationRouter.route("/").get();
-// applicationRouter.route('/').post('/', applicationsController.store);
+//
+applicationRouter.route("/").post();
 // applicationRouter.route('/').get('/:id', applicationsController.show);
 // applicationRouter.route('/').put('/:id', applicationsController.update);
 // applicationRouter.route('/').delete('/:id', applicationsController.delete);
