@@ -7,6 +7,7 @@ import {
 import { validateRequest } from "../middlewares/validateRequest";
 import applicationSchema from "../schemas/applicationSchema";
 import isAllowed from "../middlewares/isAllowed";
+import userRoles from "../utils/userRoles";
 
 const applicationRouter = Router();
 
@@ -16,7 +17,7 @@ applicationRouter
   .route("/")
   .post(
     verifyToken,
-    isAllowed("jobSeeker"),
+    isAllowed(userRoles.JOB_SEEKER),
     validateRequest(applicationSchema),
     createApplication
   );
