@@ -1,10 +1,11 @@
 import { z } from "zod";
+import requiredString from "../utils/validationUtils/requiredStringValidation";
 
 const applicationSchema = z.object({
   id: z.number().int().positive().optional(),
   uuid: z.string().uuid().optional(),
-  jobId: z.number().int().positive(),
-  userId: z.number().int().positive(),
+  jobId: requiredString("jobId"),
+  userId: requiredString("userId"),
   status: z.enum(["pending", "approved", "rejected"]).default("pending"),
 });
 

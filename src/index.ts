@@ -24,10 +24,10 @@ const port = process.env.PORT;
 connectToDB();
 
 // ===========================
-// const test = async () => {
-//   await Role.create({ role: "jobSeeker" });
-// };
-// test();
+const test = async () => {
+  await Role.create({ role: "jobProvider" });
+};
+test();
 // ===========================
 
 app.use(morgan("common"));
