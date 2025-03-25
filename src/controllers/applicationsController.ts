@@ -32,6 +32,8 @@ const createApplication = asyncWrapper(
     next: NextFunction
   ): Promise<void | Response> => {
     const applicationData = req.validatedData as TApplication;
+    const currentUserDbId = req.currentUser?.dbId;
+    applicationData.userId = currentUserDbId?.toString();
 
     const createdApplication =
       await applicationsServices.createApplicationService(applicationData);

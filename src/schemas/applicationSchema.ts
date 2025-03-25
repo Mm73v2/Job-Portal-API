@@ -5,7 +5,7 @@ const applicationSchema = z.object({
   id: z.number().int().positive().optional(),
   uuid: z.string().uuid().optional(),
   jobId: requiredString("jobId"),
-  userId: requiredString("userId"),
+  userId: requiredString("userId").optional(),
   status: z.enum(["pending", "approved", "rejected"]).default("pending"),
 });
 
