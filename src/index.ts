@@ -10,7 +10,6 @@ import { TAppError } from "./utils/errorsUtils/appError";
 import httpStatusText from "./utils/httpStatusText";
 import { authRouter, usersRouter, jobsRouter } from "./routes";
 import applicationRouter from "./routes/applicationsRoute";
-import { Role } from "./models";
 
 const app = express();
 const server = http.createServer(app);
@@ -24,10 +23,10 @@ const port = process.env.PORT;
 connectToDB();
 
 // ===========================
-const test = async () => {
-  await Role.create({ role: "jobProvider" });
-};
-test();
+// const test = async () => {
+//   await Role.create({ role: "jobSeeker" });
+// };
+// test();
 // ===========================
 
 app.use(morgan("common"));

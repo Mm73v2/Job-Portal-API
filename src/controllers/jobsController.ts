@@ -36,7 +36,6 @@ const createJob = asyncWrapper(
     const jobProviderId = req.currentUser?.dbId;
     const jobData = req.validatedData as TJob;
     jobData.jobProviderId = jobProviderId!;
-
     const createdJob = await jobsServices.createJobService(jobData);
 
     return res

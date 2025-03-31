@@ -2,6 +2,7 @@ import Application from "../models/ApplicationModel";
 import { TApplication } from "../schemas/applicationSchema";
 import handleSequelizeError from "../utils/errorsUtils/handleSequelizeError";
 import paginationInfo from "../utils/pagination/paginationInfo";
+import jobsServices from "./jobsServices";
 
 const getApplicationsService = async (pagination: {
   limit: number;
@@ -25,6 +26,8 @@ const getApplicationsService = async (pagination: {
 const createApplicationService = async (data: TApplication) => {
   try {
     const application = (await Application.create(data)).toJSON();
+    const { jobId } = data;
+    // const job = jobsServices.
     return application;
   } catch (error) {
     throw handleSequelizeError(error);

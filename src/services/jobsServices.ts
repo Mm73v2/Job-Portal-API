@@ -1,6 +1,8 @@
 import { Job, JobProvider, User } from "../models";
 import { TJob } from "../schemas/jobSchema";
+import appError from "../utils/errorsUtils/appError";
 import handleSequelizeError from "../utils/errorsUtils/handleSequelizeError";
+import httpStatusText from "../utils/httpStatusText";
 import paginationInfo from "../utils/pagination/paginationInfo";
 
 const getAlljobsService = async (pagination: {
@@ -33,6 +35,20 @@ const getAlljobsService = async (pagination: {
     throw handleSequelizeError(error);
   }
 };
+
+const findJobById = async (jobId: string) => {
+  try {
+    const job = (await Job.findOne({ where: { uuid: jobId } }))?.toJSON();
+    if (!job) {
+      const error = appError.create("Invalid job ID", 400, httpStatusText.FAIL);
+      throw error;
+    }
+    return job;
+  } catch (error) {
+    throw handleSequelizeError(error);
+  }
+};
+
 const createJobService = async (data: TJob) => {
   try {
     const job = (await Job.create(data)).toJSON();
@@ -42,4 +58,4 @@ const createJobService = async (data: TJob) => {
   }
 };
 
-export default { getAlljobsService, createJobService };
+export default { getAlljobsService, createJobService, findJobById };
