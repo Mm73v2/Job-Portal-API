@@ -27,6 +27,21 @@ const getAllJobs = asyncWrapper(
   }
 );
 
+const getJob = asyncWrapper(
+  async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void | Response> => {
+    const { jobId } = req.params;
+    const job = await jobsServices.findJobById(jobId);
+
+    return res
+      .status(200)
+      .json({ status: httpStatusText.SUCCESS, data: { job } });
+  }
+);
+
 const createJob = asyncWrapper(
   async (
     req: Request,
@@ -44,4 +59,4 @@ const createJob = asyncWrapper(
   }
 );
 
-export { getAllJobs, createJob };
+export { getAllJobs, getJob, createJob };
