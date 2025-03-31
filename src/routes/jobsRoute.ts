@@ -2,7 +2,7 @@ import { Router } from "express";
 import generateSchema from "../schemas/generateSchema";
 import { validateRequest } from "../middlewares/validateRequest";
 import jobSchema from "../schemas/jobSchema";
-import { createJob, getAllJobs } from "../controllers/jobsController";
+import { createJob, getAllJobs, getJob } from "../controllers/jobsController";
 import verifyToken from "../middlewares/verifyToken";
 import isAllowed from "../middlewares/isAllowed";
 import userRoles from "../utils/userRoles";
@@ -10,6 +10,8 @@ import userRoles from "../utils/userRoles";
 const jobsRouter = Router();
 
 jobsRouter.route("/").get(getAllJobs);
+
+jobsRouter.route("/:jobId").get(getJob);
 
 jobsRouter
   .route("/")
