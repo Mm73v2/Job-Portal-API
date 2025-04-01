@@ -28,7 +28,10 @@ const jobSchema = z.object({
       message: "Invalid status selected. Allowed values: open, closed",
     }
   ),
-  questions: z.array(questionSchema).optional(),
+  questions: z
+    .array(questionSchema)
+    .max(3, "You can't add more than 3 questions for the job")
+    .optional(),
 });
 
 export type TJob = z.infer<typeof jobSchema>;

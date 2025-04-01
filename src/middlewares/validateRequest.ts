@@ -7,7 +7,6 @@ import appError from "../utils/errorsUtils/appError";
 export const validateRequest = <T extends AnyZodObject>(schema: T) => {
   return (req: Request, res: Response, next: NextFunction) => {
     const validationResult = schema.safeParse(req.body);
-
     if (!validationResult.success) {
       const error = appError.create(
         "Validation error",
