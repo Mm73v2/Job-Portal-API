@@ -36,4 +36,5 @@ const questionSchema = z
     }
   });
 
+export type TQuestion = z.infer<typeof questionSchema>;
 export default questionSchema;

@@ -4,6 +4,7 @@ import httpStatusText from "../utils/httpStatusText";
 import { TJob } from "../schemas/jobSchema";
 import jobsServices from "../services/jobsServices";
 import paginationParams from "../utils/pagination/paginationParams";
+import questionsService from "../services/questionsService";
 // asyncWrapper(async (req: Request,res: Response,next: NextFunction): Promise<void | Response> => {});
 
 const getAllJobs = asyncWrapper(
@@ -52,6 +53,13 @@ const createJob = asyncWrapper(
     jobData.jobProviderId = jobProviderId!;
     console.log(jobData);
     // const createdJob = await jobsServices.createJobService(jobData);
+    const { questions } = jobData;
+    if (questions) {
+      const jobQuestions = await questionsService.createQuestionService(
+        questions
+      );
+      // console.log(jobQuestions);
+    }
     const createdJob = { test: "test" };
     return res
       .status(201)

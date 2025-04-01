@@ -30,6 +30,7 @@ const jobSchema = z.object({
   ),
   questions: z
     .array(questionSchema)
+    .min(1, "Questions are required")
     .max(3, "You can't add more than 3 questions for the job")
     .optional(),
 });
