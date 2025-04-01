@@ -3,6 +3,7 @@ import verifyToken from "../middlewares/verifyToken";
 import {
   createApplication,
   getAllApplications,
+  getApplication,
 } from "../controllers/applicationsController";
 import { validateRequest } from "../middlewares/validateRequest";
 import applicationSchema from "../schemas/applicationSchema";
@@ -21,7 +22,9 @@ applicationRouter
     validateRequest(applicationSchema),
     createApplication
   );
-// applicationRouter.route('/').get('/:id', applicationsController.show);
+applicationRouter
+  .route("/:applicationId")
+  .get(verifyToken, isAllowed("jobProvider"), getApplication);
 // applicationRouter.route('/').put('/:id', applicationsController.update);
 // applicationRouter.route('/').delete('/:id', applicationsController.delete);
 

@@ -25,6 +25,26 @@ const getApplicationsService = async (pagination: {
   }
 };
 
+const getApplicationByIdService = async (applicationId: string) => {
+  try {
+    const application = await Application.findOne({
+      where: { uuid: applicationId },
+    });
+    if (!application) {
+      const error = appError.create(
+        "Invalid application ID",
+        400,
+        httpStatusText.FAIL
+      );
+      throw error;
+    }
+
+    return application;
+  } catch (error) {
+    handleSequelizeError(error);
+  }
+};
+
 const createApplicationService = async (data: TApplication) => {
   try {
     const { jobId } = data;
@@ -42,4 +62,8 @@ const createApplicationService = async (data: TApplication) => {
   }
 };
 
-export default { getApplicationsService, createApplicationService };
+export default {
+  getApplicationsService,
+  getApplicationByIdService,
+  createApplicationService,
+};

@@ -25,6 +25,22 @@ const getAllApplications = asyncWrapper(
   }
 );
 
+const getApplication = asyncWrapper(
+  async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void | Response> => {
+    const { applicationId } = req.params;
+    const application = await applicationsServices.getApplicationByIdService(
+      applicationId
+    );
+    return res
+      .status(200)
+      .json({ status: httpStatusText.SUCCESS, data: { application } });
+  }
+);
+
 const createApplication = asyncWrapper(
   async (
     req: Request,
@@ -44,4 +60,4 @@ const createApplication = asyncWrapper(
   }
 );
 
-export { getAllApplications, createApplication };
+export { getAllApplications, getApplication, createApplication };
