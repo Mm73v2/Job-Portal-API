@@ -50,8 +50,9 @@ const createJob = asyncWrapper(
     const jobProviderId = req.currentUser?.dbId;
     const jobData = req.validatedData as TJob;
     jobData.jobProviderId = jobProviderId!;
-    const createdJob = await jobsServices.createJobService(jobData);
 
+    // const createdJob = await jobsServices.createJobService(jobData);
+    const createdJob = { test: "test" };
     return res
       .status(201)
       .json({ status: httpStatusText.SUCCESS, data: { createdJob } });

@@ -1,6 +1,7 @@
 import { z } from "zod";
 import requiredString from "../utils/validationUtils/requiredStringValidation";
 import numberValidation from "../utils/validationUtils/numberValidation";
+import questionSchema from "./questionSchema";
 
 const TypeEnum = z.enum(["onsite", "remotely", "hybrid"]);
 const StatusEnum = z.enum(["open", "closed"]);
@@ -27,6 +28,7 @@ const jobSchema = z.object({
       message: "Invalid status selected. Allowed values: open, closed",
     }
   ),
+  questions: z.array(questionSchema).optional(),
 });
 
 export type TJob = z.infer<typeof jobSchema>;
