@@ -1,5 +1,4 @@
 import { Router } from "express";
-import generateSchema from "../schemas/generateSchema";
 import { validateRequest } from "../middlewares/validateRequest";
 import jobSchema from "../schemas/jobSchema";
 import { createJob, getAllJobs, getJob } from "../controllers/jobsController";

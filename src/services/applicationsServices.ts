@@ -1,6 +1,8 @@
 import Application from "../models/ApplicationModel";
 import { TApplication } from "../schemas/applicationSchema";
+import appError from "../utils/errorsUtils/appError";
 import handleSequelizeError from "../utils/errorsUtils/handleSequelizeError";
+import httpStatusText from "../utils/httpStatusText";
 import paginationInfo from "../utils/pagination/paginationInfo";
 import jobsServices from "./jobsServices";
 
@@ -25,11 +27,19 @@ const getApplicationsService = async (pagination: {
 
 const createApplicationService = async (data: TApplication) => {
   try {
-    const application = (await Application.create(data)).toJSON();
     const { jobId } = data;
-    // const job = jobsServices.
+    const job = await jobsServices.findJobById(jobId);
+    if (!job) {
+      const error = appError.create("Invalid job ID", 400, httpStatusText.FAIL);
+      throw error;
+    }
+    console.log({ jobData: job });
+    data.jobId = job.id;
+    const application = (await Application.create(data)).toJSON();
+
     return application;
   } catch (error) {
+    console.log(error);
     throw handleSequelizeError(error);
   }
 };
