@@ -24,9 +24,13 @@ connectToDB();
 
 // ===========================
 // const test = async () => {
-//   await Role.create({ role: "jobSeeker" });
+//   questionsService.createQuestionService({
+//     type: "standard",
+//     questionBody: "test question 2",
+//   });
 // };
 // test();
+
 // ===========================
 
 app.use(morgan("common"));

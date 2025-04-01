@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import asyncWrapper from "../middlewares/asyncWrapper";
-import usersServices from "../services/usersServices";
 import httpStatusText from "../utils/httpStatusText";
 import { TJob } from "../schemas/jobSchema";
 import jobsServices from "../services/jobsServices";
