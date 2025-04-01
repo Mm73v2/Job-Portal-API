@@ -5,6 +5,11 @@ import handleSequelizeError from "../utils/errorsUtils/handleSequelizeError";
 import httpStatusText from "../utils/httpStatusText";
 import checkUserExists from "../utils/validationUtils/checkUserExists";
 
+const getRoleByIdService = async (roleId: number) => {
+  const role = (await Role.findByPk(roleId))?.toJSON();
+  return role;
+};
+
 const registerJobSeekerService = async (data: TJobSeeker) => {
   try {
     const {
@@ -100,11 +105,11 @@ const loginService = async (email: string) => {
       await User.findOne({
         where: { email },
         include: [{ model: Role, attributes: ["role"] }],
-        attributes: ["id", "password", "verified", "uuid"],
+        // attributes: ["id", "password", "verified", "uuid"],
       })
     )?.toJSON();
-    console.log(user);
-    checkUserExists(user);
+
+    checkUserExists(user, "Invalid credentials");
     if (!user!.verified) {
       const error = appError.create(
         "Please verify your email first then try to login again",
@@ -138,7 +143,7 @@ const resetPasswordService = async (email: string, newPassword: string) => {
       { password: newPassword },
       { where: { email } }
     );
-    checkUserExists(user);
+    checkUserExists(user, "Invalid credentials");
 
     return user;
   } catch (error) {
@@ -147,6 +152,7 @@ const resetPasswordService = async (email: string, newPassword: string) => {
 };
 
 export default {
+  getRoleByIdService,
   registerJobSeekerService,
   registerJobProviderService,
   loginService,

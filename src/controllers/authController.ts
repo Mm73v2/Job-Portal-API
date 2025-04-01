@@ -65,22 +65,19 @@ const login = asyncWrapper(
       email: string;
       password: string;
     };
-    const userBasicData = await authServices.loginService(email);
+    const user = await authServices.loginService(email);
 
-    if (!compareResource(password, userBasicData.password)) {
+    if (!compareResource(password, user.password)) {
       const error = appError.create(
-        "Invalid password",
+        "Invalid credentials",
         400,
         httpStatusText.FAIL
       );
       return next(error);
     }
 
-    const user = await usersServices.findUserByIdOrEmailService({
-      userId: userBasicData.uuid,
-    });
-
     const tokenPayload = {
+      dbId: user.id,
       id: user.uuid,
       email: user.email,
       role: user.roleId,

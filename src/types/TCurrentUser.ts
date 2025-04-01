@@ -1,6 +1,6 @@
 export type TCurrentUser = {
+  dbId: number;
   id: string;
   email: string;
-  roleId: number;
-  dbId?: number;
+  role: number;
 };

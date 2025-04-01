@@ -33,13 +33,11 @@ const createApplicationService = async (data: TApplication) => {
       const error = appError.create("Invalid job ID", 400, httpStatusText.FAIL);
       throw error;
     }
-    console.log({ jobData: job });
     data.jobId = job.id;
     const application = (await Application.create(data)).toJSON();
 
     return application;
   } catch (error) {
-    console.log(error);
     throw handleSequelizeError(error);
   }
 };

@@ -1,13 +1,9 @@
 import appError from "../errorsUtils/appError";
 import httpStatusText from "../httpStatusText";
 
-const checkUserExists = (user: any) => {
+const checkUserExists = (user: any, message: string = "Invalid user ID") => {
   if (!user) {
-    const error = appError.create(
-      "Invalid user ID",
-      404,
-      httpStatusText.NOT_FOUND
-    );
+    const error = appError.create(message, 404, httpStatusText.NOT_FOUND);
     throw error;
   }
   return true;

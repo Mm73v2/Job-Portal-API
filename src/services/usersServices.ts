@@ -85,7 +85,7 @@ const findUserByIdOrEmailService = async (
       })
     )?.toJSON();
 
-    checkUserExists(user);
+    checkUserExists(user, "Invalid user information");
     if (!user.JobProvider) {
       delete user.JobProvider;
     } else if (!user.JobSeeker) {
