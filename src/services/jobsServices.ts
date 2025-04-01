@@ -1,9 +1,11 @@
+import sequelize from "../config/sequelizeConfig";
 import { Job, JobProvider, User } from "../models";
 import { TJob } from "../schemas/jobSchema";
 import appError from "../utils/errorsUtils/appError";
 import handleSequelizeError from "../utils/errorsUtils/handleSequelizeError";
 import httpStatusText from "../utils/httpStatusText";
 import paginationInfo from "../utils/pagination/paginationInfo";
+import questionsService from "./questionsService";
 
 const getAlljobsService = async (pagination: {
   limit: number;
@@ -50,10 +52,19 @@ const findJobById = async (jobId: string) => {
 };
 
 const createJobService = async (data: TJob) => {
+  const transcation = await sequelize.transaction();
   try {
-    const job = (await Job.create(data)).toJSON();
+    const { questions: requestQuestions, ...jobData } = data;
+    const job = (await Job.create(jobData)).toJSON();
+    if (requestQuestions) {
+      const questions = await questionsService.createQuestionService(
+        requestQuestions
+      );
+    }
+    (await transcation).commit();
     return job;
   } catch (error) {
+    (await transcation).rollback();
     throw handleSequelizeError(error);
   }
 };

@@ -20,6 +20,7 @@ const createQuestionService = async (data: TQuestion[]) => {
     const question = await Question.create(customQuestions[0]);
     return question;
   } catch (error) {
+    console.log(error);
     handleSequelizeError(error);
   }
 };

@@ -51,16 +51,9 @@ const createJob = asyncWrapper(
     const jobProviderId = req.currentUser?.dbId;
     const jobData = req.validatedData as TJob;
     jobData.jobProviderId = jobProviderId!;
-    console.log(jobData);
-    // const createdJob = await jobsServices.createJobService(jobData);
-    const { questions } = jobData;
-    if (questions) {
-      const jobQuestions = await questionsService.createQuestionService(
-        questions
-      );
-      // console.log(jobQuestions);
-    }
-    const createdJob = { test: "test" };
+    const createdJob = await jobsServices.createJobService(jobData);
+
+    // const createdJob = { test: "test" };
     return res
       .status(201)
       .json({ status: httpStatusText.SUCCESS, data: { createdJob } });
