@@ -55,12 +55,17 @@ const createJobService = async (data: TJob) => {
   const transcation = await sequelize.transaction();
   try {
     const { questions: requestQuestions, ...jobData } = data;
+    let questions;
     const job = (await Job.create(jobData)).toJSON();
     if (requestQuestions) {
-      const questions = await questionsService.createQuestionService(
+      questions = await questionsService.createQuestionService(
         requestQuestions
       );
     }
+    const jobQuestionsData = { jobId: job.id, questions };
+    const jobQuestions = await questionsService.createJobQuestionService(
+      jobQuestionsData
+    );
     (await transcation).commit();
     return job;
   } catch (error) {

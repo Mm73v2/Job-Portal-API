@@ -1,4 +1,4 @@
-import { Question } from "../models";
+import { JobQuestion, Question } from "../models";
 import { TQuestion } from "../schemas/questionSchema";
 import handleSequelizeError from "../utils/errorsUtils/handleSequelizeError";
 
@@ -14,15 +14,41 @@ const createQuestionService = async (data: TQuestion[]) => {
         validate: true,
         ignoreDuplicates: false,
       });
-      return questions;
+      const parsedQuestions = questions.map((question) => question.toJSON());
+      return parsedQuestions;
     }
 
-    const question = await Question.create(customQuestions[0]);
+    const question = (await Question.create(customQuestions[0])).toJSON();
     return question;
   } catch (error) {
-    console.log(error);
     handleSequelizeError(error);
   }
 };
 
-export default { createQuestionService };
+const createJobQuestionService = async (data: {
+  jobId: number;
+  questions: TQuestion | TQuestion[];
+}) => {
+  try {
+    const { jobId, questions } = data;
+    if (Array.isArray(questions)) {
+      const jobQuestionsData = questions.map((question) => ({
+        jobId,
+        questionId: question.id,
+      }));
+      const jobQuestions = await JobQuestion.bulkCreate(jobQuestionsData);
+      const parsedJobQuestions = jobQuestions.map((jobQuestion) =>
+        jobQuestion.toJSON()
+      );
+      return parsedJobQuestions;
+    } else {
+      const jobQuestionData = { jobId, questionId: questions.id };
+      const jobQuestion = (await JobQuestion.create(jobQuestionData)).toJSON();
+      return jobQuestion;
+    }
+  } catch (error) {
+    handleSequelizeError(error);
+  }
+};
+
+export default { createQuestionService, createJobQuestionService };
