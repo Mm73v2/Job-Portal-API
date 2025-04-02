@@ -1,6 +1,7 @@
 import sequelize from "../config/sequelizeConfig";
 import { Job, JobProvider, Question, User } from "../models";
 import { TJob } from "../schemas/jobSchema";
+import { TQuestion } from "../schemas/questionSchema";
 import appError from "../utils/errorsUtils/appError";
 import handleSequelizeError from "../utils/errorsUtils/handleSequelizeError";
 import httpStatusText from "../utils/httpStatusText";
@@ -56,23 +57,56 @@ const findJobById = async (jobId: string) => {
   }
 };
 
+const handleRequestQuestions = async (requestQuestions: TQuestion[]) => {
+  let standardQuestions: TQuestion[] = [];
+  let customQuestions: TQuestion[] = [];
+  let createdQuestions: TQuestion[] = [];
+
+  if (requestQuestions) {
+    for (let i = 0; i < requestQuestions.length; i++) {
+      if (requestQuestions[i].type === "standard") {
+        standardQuestions.push(requestQuestions[i]);
+      } else {
+        customQuestions.push(requestQuestions[i]);
+      }
+    }
+  }
+
+  if (customQuestions.length > 0) {
+    createdQuestions = await questionsService.createQuestionService(
+      customQuestions
+    );
+    const jobQuestions = [...createdQuestions, ...standardQuestions];
+    return jobQuestions;
+  }
+
+  return standardQuestions;
+};
+
 const createJobService = async (data: TJob) => {
   const transcation = await sequelize.transaction();
   try {
     const { questions: requestQuestions, ...jobData } = data;
-    let questions;
+
     const job = (await Job.create(jobData)).toJSON();
-    if (requestQuestions) {
-      questions = await questionsService.createQuestionService(
-        requestQuestions
-      );
-    }
-    const jobQuestionsData = { jobId: job.id, questions };
+
+    const jobQuestionsIds = await handleRequestQuestions(
+      requestQuestions as TQuestion[]
+    );
+
+    const jobQuestionsData = jobQuestionsIds.map((question) => ({
+      jobId: job.id,
+      questionId: question.id!,
+    }));
+
     const jobQuestions = await questionsService.createJobQuestionService(
       jobQuestionsData
     );
+
     (await transcation).commit();
-    return job;
+
+    const createdJobData = await findJobById(job.uuid);
+    return createdJobData;
   } catch (error) {
     (await transcation).rollback();
     throw handleSequelizeError(error);

@@ -4,13 +4,8 @@ import handleSequelizeError from "../utils/errorsUtils/handleSequelizeError";
 
 const createQuestionService = async (data: TQuestion[]) => {
   try {
-    // only adding the custom questions
-    const customQuestions = data.filter(
-      (question) => question.type !== "standard"
-    );
-    if (customQuestions.length === 0) return;
-    if (customQuestions.length > 1) {
-      const questions = await Question.bulkCreate(customQuestions, {
+    if (data.length > 1) {
+      const questions = await Question.bulkCreate(data, {
         validate: true,
         ignoreDuplicates: false,
       });
@@ -18,32 +13,28 @@ const createQuestionService = async (data: TQuestion[]) => {
       return parsedQuestions;
     }
 
-    const question = (await Question.create(customQuestions[0])).toJSON();
+    const question = (await Question.create(data[0])).toJSON();
     return question;
   } catch (error) {
     handleSequelizeError(error);
   }
 };
 
-const createJobQuestionService = async (data: {
-  jobId: number;
-  questions: TQuestion | TQuestion[];
-}) => {
+const createJobQuestionService = async (
+  data: {
+    jobId: number;
+    questionId: number;
+  }[]
+) => {
   try {
-    const { jobId, questions } = data;
-    if (Array.isArray(questions)) {
-      const jobQuestionsData = questions.map((question) => ({
-        jobId,
-        questionId: question.id,
-      }));
-      const jobQuestions = await JobQuestion.bulkCreate(jobQuestionsData);
+    if (data.length > 1) {
+      const jobQuestions = await JobQuestion.bulkCreate(data);
       const parsedJobQuestions = jobQuestions.map((jobQuestion) =>
         jobQuestion.toJSON()
       );
       return parsedJobQuestions;
     } else {
-      const jobQuestionData = { jobId, questionId: questions.id };
-      const jobQuestion = (await JobQuestion.create(jobQuestionData)).toJSON();
+      const jobQuestion = (await JobQuestion.create(data[0])).toJSON();
       return jobQuestion;
     }
   } catch (error) {
