@@ -42,6 +42,20 @@ const getJob = asyncWrapper(
   }
 );
 
+const getQuestions = asyncWrapper(
+  async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void | Response> => {
+    const questions = await questionsService.getStandardQuestionsService();
+
+    return res
+      .status(200)
+      .json({ status: httpStatusText.SUCCESS, data: { questions } });
+  }
+);
+
 const createJob = asyncWrapper(
   async (
     req: Request,
@@ -60,4 +74,4 @@ const createJob = asyncWrapper(
   }
 );
 
-export { getAllJobs, getJob, createJob };
+export { getAllJobs, getQuestions, getJob, createJob };

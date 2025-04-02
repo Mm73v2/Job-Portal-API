@@ -3,6 +3,18 @@ import { JobQuestion, Question } from "../models";
 import { TQuestion } from "../schemas/questionSchema";
 import handleSequelizeError from "../utils/errorsUtils/handleSequelizeError";
 
+const getStandardQuestionsService = async () => {
+  try {
+    const questions = await Question.findAll({
+      where: { type: "standard" },
+      attributes: ["id", "type", "questionBody"],
+    });
+    return questions;
+  } catch (error) {
+    handleSequelizeError(error);
+  }
+};
+
 const createQuestionService = async (
   data: TQuestion[],
   transaction: Transaction
@@ -50,4 +62,8 @@ const createJobQuestionService = async (
   }
 };
 
-export default { createQuestionService, createJobQuestionService };
+export default {
+  getStandardQuestionsService,
+  createQuestionService,
+  createJobQuestionService,
+};

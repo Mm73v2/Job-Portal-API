@@ -24,7 +24,7 @@ applicationRouter
   );
 applicationRouter
   .route("/:applicationId")
-  .get(verifyToken, isAllowed("jobProvider"), getApplication);
+  .get(verifyToken, isAllowed(userRoles.JOB_PROVIDER), getApplication);
 // applicationRouter.route('/').put('/:id', applicationsController.update);
 // applicationRouter.route('/').delete('/:id', applicationsController.delete);
 
