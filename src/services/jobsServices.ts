@@ -1,5 +1,5 @@
 import sequelize from "../config/sequelizeConfig";
-import { Job, JobProvider, User } from "../models";
+import { Job, JobProvider, Question, User } from "../models";
 import { TJob } from "../schemas/jobSchema";
 import appError from "../utils/errorsUtils/appError";
 import handleSequelizeError from "../utils/errorsUtils/handleSequelizeError";
@@ -40,7 +40,12 @@ const getAlljobsService = async (pagination: {
 
 const findJobById = async (jobId: string) => {
   try {
-    const job = (await Job.findOne({ where: { uuid: jobId } }))?.toJSON();
+    const job = (
+      await Job.findOne({
+        where: { uuid: jobId },
+        include: { model: Question, through: { attributes: [] } },
+      })
+    )?.toJSON();
     if (!job) {
       const error = appError.create("Invalid job ID", 400, httpStatusText.FAIL);
       throw error;
