@@ -1,6 +1,6 @@
 import { Transaction } from "sequelize";
 import sequelize from "../config/sequelizeConfig";
-import { Job, JobProvider, Question, User } from "../models";
+import { Job, JobProvider, JobQuestion, Question, User } from "../models";
 import { TJob } from "../schemas/jobSchema";
 import { TQuestion } from "../schemas/questionSchema";
 import appError from "../utils/errorsUtils/appError";
@@ -57,6 +57,14 @@ const findJobById = async (jobId: string) => {
     throw handleSequelizeError(error);
   }
 };
+
+// const findJobQuestions = async (jobId: string) => {
+//   try {
+//     const jobQuestions = await JobQuestion.
+//   } catch (error) {
+//     throw handleSequelizeError(error)
+//   }
+// }
 
 const handleRequestQuestions = async (
   requestQuestions: TQuestion[],

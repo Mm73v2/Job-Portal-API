@@ -22,6 +22,7 @@ JobQuestion.init(
   {
     sequelize,
     modelName: "JobQuestion",
+    tableName: "job_questions",
   }
 );
 

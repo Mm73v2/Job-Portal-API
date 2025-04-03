@@ -1,5 +1,6 @@
 import Application from "../models/ApplicationModel";
 import { TApplication } from "../schemas/applicationSchema";
+import { TJob } from "../schemas/jobSchema";
 import appError from "../utils/errorsUtils/appError";
 import handleSequelizeError from "../utils/errorsUtils/handleSequelizeError";
 import httpStatusText from "../utils/httpStatusText";
@@ -53,6 +54,19 @@ const createApplicationService = async (data: TApplication) => {
       const error = appError.create("Invalid job ID", 400, httpStatusText.FAIL);
       throw error;
     }
+    console.log(job);
+    if (job.Questions?.length) {
+      if (data.answers?.length !== job.Questions?.length) {
+        console.log("iam right");
+        const error = appError.create(
+          "Invalid number of answers",
+          400,
+          httpStatusText.FAIL
+        );
+        throw error;
+      }
+    }
+
     data.jobId = job.id;
     const application = (await Application.create(data)).toJSON();
 
