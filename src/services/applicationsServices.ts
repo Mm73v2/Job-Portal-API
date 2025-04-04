@@ -1,4 +1,6 @@
+import { fromZodError } from "zod-validation-error";
 import Application from "../models/ApplicationModel";
+import answerSchema, { TAnswer } from "../schemas/answerSchema";
 import { TApplication } from "../schemas/applicationSchema";
 import { TJob } from "../schemas/jobSchema";
 import appError from "../utils/errorsUtils/appError";
@@ -6,6 +8,7 @@ import handleSequelizeError from "../utils/errorsUtils/handleSequelizeError";
 import httpStatusText from "../utils/httpStatusText";
 import paginationInfo from "../utils/pagination/paginationInfo";
 import jobsServices from "./jobsServices";
+import { TQuestion } from "../schemas/questionSchema";
 
 const getApplicationsService = async (pagination: {
   limit: number;
@@ -46,6 +49,34 @@ const getApplicationByIdService = async (applicationId: string) => {
   }
 };
 
+const validateAnswersSchema = (answers: TAnswer[]) => {
+  const answersErrors = answerSchema.safeParse(answers);
+  if (!answersErrors.success) {
+    const error = appError.create(
+      "Validation error",
+      400,
+      httpStatusText.FAIL,
+      fromZodError(answersErrors.error).details.map((error) => error.message)
+    );
+    throw error;
+  }
+};
+
+const validateAnswers = (questions: TQuestion[], answers: TAnswer[]) => {
+  if (questions?.length) {
+    if (answers?.length !== questions?.length) {
+      console.log("iam right");
+      const error = appError.create(
+        "Invalid number of answers",
+        400,
+        httpStatusText.FAIL
+      );
+      throw error;
+    }
+    validateAnswersSchema(answers as TAnswer[]);
+  }
+};
+
 const createApplicationService = async (data: TApplication) => {
   try {
     const { jobId } = data;
@@ -54,18 +85,8 @@ const createApplicationService = async (data: TApplication) => {
       const error = appError.create("Invalid job ID", 400, httpStatusText.FAIL);
       throw error;
     }
-    console.log(job);
-    if (job.Questions?.length) {
-      if (data.answers?.length !== job.Questions?.length) {
-        console.log("iam right");
-        const error = appError.create(
-          "Invalid number of answers",
-          400,
-          httpStatusText.FAIL
-        );
-        throw error;
-      }
-    }
+
+    validateAnswers(job.Questions as TQuestion[], data.answers as TAnswer[]);
 
     data.jobId = job.id;
     const application = (await Application.create(data)).toJSON();

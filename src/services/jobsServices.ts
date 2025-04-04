@@ -58,14 +58,6 @@ const findJobById = async (jobId: string) => {
   }
 };
 
-// const findJobQuestions = async (jobId: string) => {
-//   try {
-//     const jobQuestions = await JobQuestion.
-//   } catch (error) {
-//     throw handleSequelizeError(error)
-//   }
-// }
-
 const handleRequestQuestions = async (
   requestQuestions: TQuestion[],
   transaction: Transaction
