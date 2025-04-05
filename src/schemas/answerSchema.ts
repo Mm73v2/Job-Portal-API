@@ -7,6 +7,8 @@ const answerSchema = z
   .object({
     id: z.number().int().positive().optional(),
     uuid: z.string().uuid().optional(),
+    userId: z.string().optional(),
+    applicationId: z.string().optional(),
     answerId: requiredString("answerId").optional(),
     questionId: requiredString("questionId").optional(),
     questionType: questionTypeEnum.optional(),

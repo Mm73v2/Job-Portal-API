@@ -1,15 +1,15 @@
-import { fromZodError } from "zod-validation-error";
 import Application from "../models/ApplicationModel";
-import answerSchema, { TAnswer } from "../schemas/answerSchema";
+import answersServices from "./answersServices";
+import { TAnswer } from "../schemas/answerSchema";
 import { TApplication } from "../schemas/applicationSchema";
-import { TJob } from "../schemas/jobSchema";
 import appError from "../utils/errorsUtils/appError";
 import handleSequelizeError from "../utils/errorsUtils/handleSequelizeError";
 import httpStatusText from "../utils/httpStatusText";
 import paginationInfo from "../utils/pagination/paginationInfo";
 import jobsServices from "./jobsServices";
 import { TQuestion } from "../schemas/questionSchema";
-import { z } from "zod";
+import sequelize from "../config/sequelizeConfig";
+import { Transaction } from "sequelize";
 
 const getApplicationsService = async (pagination: {
   limit: number;
@@ -78,7 +78,32 @@ const validateAnswers = (questions: TQuestion[], answers: TAnswer[]) => {
   }
 };
 
+const addApplicationAnswers = async (
+  answers: TAnswer[],
+  userId: string,
+  applicationId: string,
+  transaction: Transaction
+) => {
+  for (let i = 0; i < answers.length; i++) {
+    if (answers[i].questionType === "standard" && answers[i].save) {
+      answers[i].userId = userId;
+      const answer = await answersServices.createAnswerService(
+        answers[i],
+        transaction
+      );
+    }
+    // const {} = answers[i]
+    answers[i].applicationId = applicationId;
+    const applicationAnswer =
+      await answersServices.createApplicationAnswerService(
+        answers[i],
+        transaction
+      );
+  }
+};
+
 const createApplicationService = async (data: TApplication) => {
+  const transaction = await sequelize.transaction();
   try {
     const { jobId } = data;
     const job = await jobsServices.findJobById(jobId);
@@ -90,10 +115,22 @@ const createApplicationService = async (data: TApplication) => {
     validateAnswers(job.Questions as TQuestion[], data.answers as TAnswer[]);
 
     data.jobId = job.id;
-    const application = (await Application.create(data)).toJSON();
 
+    const application = (
+      await Application.create(data, { transaction })
+    ).toJSON();
+
+    await addApplicationAnswers(
+      data.answers!,
+      data.userId!,
+      application.id,
+      transaction
+    );
+
+    await transaction.commit();
     return application;
   } catch (error) {
+    await transaction.rollback();
     throw handleSequelizeError(error);
   }
 };
