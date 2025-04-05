@@ -10,7 +10,7 @@ Answer.init(
     userId: { type: DataTypes.INTEGER, allowNull: false },
     questionId: { type: DataTypes.INTEGER, allowNull: false },
     answerBody: { type: DataTypes.TEXT, allowNull: false },
-    isSaved: { type: DataTypes.BOOLEAN, defaultValue: false },
+    save: { type: DataTypes.BOOLEAN, defaultValue: false },
   },
   {
     sequelize,

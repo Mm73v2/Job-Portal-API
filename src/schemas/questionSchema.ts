@@ -1,7 +1,7 @@
 import { z } from "zod";
 import requiredString from "../utils/validationUtils/requiredStringValidation";
 
-const TypeEnum = z.enum(["standard", "custom"], {
+export const questionTypeEnum = z.enum(["standard", "custom"], {
   required_error: "Question type is required",
   invalid_type_error:
     "Invalid question type selected. Allowed values: standard, custom",
@@ -9,7 +9,7 @@ const TypeEnum = z.enum(["standard", "custom"], {
 
 const questionSchema = z
   .object({
-    type: TypeEnum,
+    type: questionTypeEnum,
     id: z.number().int().positive().optional(),
     uuid: z.string().uuid().optional(),
     questionBody: requiredString("Question body").optional(),

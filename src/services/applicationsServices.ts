@@ -9,6 +9,7 @@ import httpStatusText from "../utils/httpStatusText";
 import paginationInfo from "../utils/pagination/paginationInfo";
 import jobsServices from "./jobsServices";
 import { TQuestion } from "../schemas/questionSchema";
+import { z } from "zod";
 
 const getApplicationsService = async (pagination: {
   limit: number;
@@ -49,18 +50,19 @@ const getApplicationByIdService = async (applicationId: string) => {
   }
 };
 
-const validateAnswersSchema = (answers: TAnswer[]) => {
-  const answersErrors = answerSchema.safeParse(answers);
-  if (!answersErrors.success) {
-    const error = appError.create(
-      "Validation error",
-      400,
-      httpStatusText.FAIL,
-      fromZodError(answersErrors.error).details.map((error) => error.message)
-    );
-    throw error;
-  }
-};
+// const validateAnswersSchema = (answers: TAnswer[]) => {
+//   const answersErrors = z.array(answerSchema).safeParse(answers);
+//   console.log(answers);
+//   if (!answersErrors.success) {
+//     const error = appError.create(
+//       "Validation error",
+//       400,
+//       httpStatusText.FAIL,
+//       fromZodError(answersErrors.error).details.map((error) => error.message)
+//     );
+//     throw error;
+//   }
+// };
 
 const validateAnswers = (questions: TQuestion[], answers: TAnswer[]) => {
   if (questions?.length) {
@@ -73,7 +75,6 @@ const validateAnswers = (questions: TQuestion[], answers: TAnswer[]) => {
       );
       throw error;
     }
-    validateAnswersSchema(answers as TAnswer[]);
   }
 };
 
