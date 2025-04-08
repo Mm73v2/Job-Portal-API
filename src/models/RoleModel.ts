@@ -10,6 +10,10 @@ Role.init(
       autoIncrement: true,
       primaryKey: true,
     },
+    uuid: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+    },
     role: {
       type: DataTypes.STRING,
       allowNull: false,

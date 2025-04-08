@@ -11,6 +11,7 @@ JobProvider.init(
   },
   {
     sequelize,
+    modelName: "jobprovider",
     tableName: "job_providers",
     timestamps: false,
   }

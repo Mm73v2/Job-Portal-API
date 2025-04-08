@@ -14,8 +14,6 @@ Question.init(
     sequelize,
     tableName: "questions",
     timestamps: true,
-    createdAt: "createdAt",
-    updatedAt: "updatedAt",
   }
 );
 

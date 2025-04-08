@@ -17,6 +17,7 @@ JobSeeker.init(
   },
   {
     sequelize,
+    modelName: "jobseeker",
     tableName: "job_seekers",
     timestamps: false,
   }

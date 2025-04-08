@@ -12,7 +12,7 @@ Follow.init(
     },
     uuid: { type: DataTypes.UUID, defaultValue: UUIDV4() },
     userId: {
-      type: DataTypes.UUID,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     company: {
@@ -23,7 +23,7 @@ Follow.init(
   },
   {
     sequelize,
-    modelName: "Follow",
+    modelName: "follow",
     timestamps: true,
     paranoid: true,
     deletedAt: "deletedAt",

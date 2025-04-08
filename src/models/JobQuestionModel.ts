@@ -6,23 +6,28 @@ class JobQuestion extends Model {}
 JobQuestion.init(
   {
     id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
     },
-    jobId: {
+    uuid: {
       type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+    },
+    jobId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     questionId: {
-      type: DataTypes.UUID,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
   },
   {
     sequelize,
-    modelName: "JobQuestion",
+    modelName: "jobquestion",
     tableName: "job_questions",
+    timestamps: true,
   }
 );
 
