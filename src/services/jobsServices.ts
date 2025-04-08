@@ -93,7 +93,7 @@ const createJobService = async (data: TJob) => {
   try {
     const { questions: requestQuestions, ...jobData } = data;
 
-    const job = (await Job.create(jobData)).toJSON();
+    const job = (await Job.create(jobData, { transaction })).toJSON();
 
     if (requestQuestions) {
       const jobQuestionsIds = await handleRequestQuestions(
@@ -102,11 +102,12 @@ const createJobService = async (data: TJob) => {
       );
 
       const jobQuestionsData = jobQuestionsIds.map((question) => ({
-        jobId: job.id,
-        questionId: question.id!,
+        jobId: job.uuid as string,
+        questionId: question.uuid!,
       }));
 
       const jobQuestions = await questionsService.createJobQuestionService(
+        //@ts-ignore // FIX THIS
         jobQuestionsData,
         transaction
       );

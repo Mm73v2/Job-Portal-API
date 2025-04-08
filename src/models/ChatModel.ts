@@ -7,8 +7,8 @@ Chat.init(
   {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     uuid: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4 },
-    firstUser: { type: DataTypes.INTEGER, allowNull: false },
-    secondUser: { type: DataTypes.INTEGER, allowNull: false },
+    firstUser: { type: DataTypes.UUID, allowNull: false },
+    secondUser: { type: DataTypes.UUID, allowNull: false },
   },
   { sequelize, modelName: "chat", timestamps: true }
 );

@@ -12,7 +12,7 @@ Follow.init(
     },
     uuid: { type: DataTypes.UUID, defaultValue: UUIDV4() },
     userId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     company: {

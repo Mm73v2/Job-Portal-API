@@ -4,10 +4,7 @@ import minMaxValidation from "../utils/validationUtils/minMaxValidation";
 import numberValidation from "../utils/validationUtils/numberValidation";
 
 const jobSeekerSchema = z.object({
-  userId: numberValidation(
-    "User ID",
-    "Invalid user ID for the job seeker table"
-  ).optional(),
+  userId: requiredString("User ID").uuid().optional(),
   firstName: minMaxValidation("First name", 1, 20),
   lastName: minMaxValidation("Last name", 1, 20),
   gender: z.enum(["male", "female"]),

@@ -10,10 +10,7 @@ const jobSchema = z.object({
   uuid: z.string().uuid().optional(),
   title: requiredString("Title"),
   description: requiredString("Description"),
-  jobProviderId: numberValidation(
-    "Job provider ID",
-    "Job provider ID must be a valid number"
-  ).optional(),
+  jobProviderId: requiredString("Job provider ID").uuid().optional(),
   type: TypeEnum.refine((value) => TypeEnum.options.includes(value), {
     message: "Invalid type selected. Allowed values: onsite, remotely, hybrid",
   }),
@@ -30,7 +27,10 @@ const jobSchema = z.object({
   ),
   questions: z
     .array(questionSchema)
-    .min(1, "Questions are required")
+    .min(
+      1,
+      "You can't send an empty questions array, you can create the job without it, or add questions to it"
+    )
     .max(3, "You can't add more than 3 questions for the job")
     .optional(),
 });

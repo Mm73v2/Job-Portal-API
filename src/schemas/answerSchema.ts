@@ -7,10 +7,10 @@ const answerSchema = z
   .object({
     id: z.number().int().positive().optional(),
     uuid: z.string().uuid().optional(),
-    userId: z.string().optional(),
-    applicationId: z.string().optional(),
+    userId: z.string().uuid().optional(),
+    applicationId: z.string().uuid().optional(),
     answerId: requiredString("answerId").optional(),
-    questionId: requiredString("questionId").optional(),
+    questionId: requiredString("questionId").uuid().optional(),
     questionType: questionTypeEnum.optional(),
     answerBody: minMaxValidation("answerBody", 1, 1000).optional(),
     save: z.boolean().default(false),

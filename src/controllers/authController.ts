@@ -77,7 +77,7 @@ const login = asyncWrapper(
     }
 
     const tokenPayload = {
-      dbId: user.id,
+      // dbId: user.id,
       id: user.uuid,
       email: user.email,
       role: user.roleId,

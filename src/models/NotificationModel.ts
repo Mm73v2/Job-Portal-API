@@ -7,11 +7,11 @@ Notification.init(
   {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     uuid: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4 },
-    userId: { type: DataTypes.INTEGER, allowNull: false },
+    userId: { type: DataTypes.UUID, allowNull: false },
     content: { type: DataTypes.TEXT, allowNull: false },
-    from: { type: DataTypes.INTEGER, allowNull: false }, // Sender
+    from: { type: DataTypes.UUID, allowNull: false }, // Sender
     read: { type: DataTypes.BOOLEAN, defaultValue: false },
-    sourceId: { type: DataTypes.INTEGER, allowNull: true },
+    sourceId: { type: DataTypes.UUID, allowNull: true },
     deletedAt: { type: DataTypes.DATE, allowNull: true },
   },
   {

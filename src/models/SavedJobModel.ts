@@ -7,8 +7,8 @@ SavedJob.init(
   {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     uuid: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4 },
-    userId: { type: DataTypes.INTEGER, allowNull: false },
-    jobId: { type: DataTypes.INTEGER, allowNull: false },
+    userId: { type: DataTypes.UUID, allowNull: false },
+    jobId: { type: DataTypes.UUID, allowNull: false },
   },
   {
     sequelize,

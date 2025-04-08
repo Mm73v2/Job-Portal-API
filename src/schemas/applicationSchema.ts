@@ -5,7 +5,7 @@ import answerSchema from "./answerSchema";
 const applicationSchema = z.object({
   id: z.number().int().positive().optional(),
   uuid: z.string().uuid().optional(),
-  jobId: requiredString("jobId"),
+  jobId: requiredString("jobId").uuid(),
   userId: requiredString("userId").optional(),
   status: z.enum(["pending", "approved", "rejected"]).default("pending"),
   answers: z.array(answerSchema).optional(),

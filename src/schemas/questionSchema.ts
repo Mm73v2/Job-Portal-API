@@ -9,18 +9,16 @@ export const questionTypeEnum = z.enum(["standard", "custom"], {
 
 const questionSchema = z
   .object({
-    type: questionTypeEnum,
     id: z.number().int().positive().optional(),
     uuid: z.string().uuid().optional(),
+    questionId: z.string().uuid().optional(),
+    type: questionTypeEnum,
     questionBody: requiredString("Question body").optional(),
   })
   .superRefine((data, ctx) => {
-    if (
-      data.type === "standard" &&
-      (data.id === undefined || data.id === null)
-    ) {
+    if (data.type === "standard" && !data.questionId) {
       ctx.addIssue({
-        path: ["id"],
+        path: ["questionId"],
         message: "Question ID is requried for standard questions",
         code: "custom",
       });

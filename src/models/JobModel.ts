@@ -9,7 +9,7 @@ Job.init(
     uuid: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4 },
     title: { type: DataTypes.STRING, allowNull: false },
     description: { type: DataTypes.TEXT, allowNull: false },
-    jobProviderId: { type: DataTypes.INTEGER, allowNull: false },
+    jobProviderId: { type: DataTypes.UUID, allowNull: false },
     type: {
       type: DataTypes.ENUM("onsite", "remotely", "hybrid"),
       allowNull: false,

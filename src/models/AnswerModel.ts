@@ -7,8 +7,8 @@ Answer.init(
   {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     uuid: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4 },
-    userId: { type: DataTypes.INTEGER, allowNull: false },
-    questionId: { type: DataTypes.INTEGER, allowNull: false },
+    userId: { type: DataTypes.UUID, allowNull: false },
+    questionId: { type: DataTypes.UUID, allowNull: false },
     answerBody: { type: DataTypes.TEXT, allowNull: false },
     save: { type: DataTypes.BOOLEAN, defaultValue: false },
   },
