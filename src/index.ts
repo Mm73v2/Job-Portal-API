@@ -10,6 +10,8 @@ import { TAppError } from "./utils/errorsUtils/appError";
 import httpStatusText from "./utils/httpStatusText";
 import { authRouter, usersRouter, jobsRouter } from "./routes";
 import applicationRouter from "./routes/applicationsRoute";
+import questionsService from "./services/questionsService";
+import sequelize from "./config/sequelizeConfig";
 
 const app = express();
 const server = http.createServer(app);
@@ -24,13 +26,20 @@ connectToDB();
 
 // ===========================
 // const test = async () => {
-//   questionsService.createQuestionService({
-//     type: "standard",
-//     questionBody: "test question 2",
-//   });
+//   const transaction = await sequelize.transaction();
+//   await questionsService.createQuestionService(
+//     [
+//       {
+//         type: "standard",
+//         questionBody: "test question 2",
+//       },
+//     ],
+//     transaction
+//   );
+
+//   await transaction.commit();
 // };
 // test();
-
 // ===========================
 
 app.use(morgan("common"));

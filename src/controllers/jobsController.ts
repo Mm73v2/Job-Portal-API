@@ -67,7 +67,8 @@ const createJob = asyncWrapper(
     jobData.jobProviderId = jobProviderId!;
     const createdJob = await jobsServices.createJobService(jobData);
 
-    // const createdJob = { test: "test" };
+    console.log(jobData);
+
     return res
       .status(201)
       .json({ status: httpStatusText.SUCCESS, data: { createdJob } });
